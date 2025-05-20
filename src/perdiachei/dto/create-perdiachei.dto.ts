@@ -1,9 +1,10 @@
-//import { Column, PrimaryGeneratedColumn } from 'typeorm';
-import { IsBoolean, IsDate, IsNumber, IsString } from 'class-validator'
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IsBoolean, IsDate, IsNumber, IsOptional, IsString } from 'class-validator'
 
 export class CreatePerdiacheiDto {
     @IsNumber()
-    id: number;
+    @IsOptional()
+    id?: number;
 
     @IsString()
     detalhes: string;

@@ -6,7 +6,7 @@ import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class PerdiacheiService {
-constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   private mapToEntity(perdiachei: any): Perdiachei {
     return {
@@ -20,15 +20,31 @@ constructor(private prisma: PrismaService) {}
   }
 
   async create(createPerdiacheiDto: CreatePerdiacheiDto): Promise<Perdiachei> {
-
     const perdiachei = await this.prisma.perdiachei.create({
-      data: createPerdiacheiDto,
+      data: {
+        ...(createPerdiacheiDto.id && { id: createPerdiacheiDto.id }),
+        detalhes: createPerdiacheiDto.detalhes,
+        localizacao: createPerdiacheiDto.localizacao,
+        data: createPerdiacheiDto.data,
+        status: createPerdiacheiDto.status,
+        tipo: createPerdiacheiDto.tipo,
+      },
     });
     return this.mapToEntity(perdiachei);
   }
 
-  update(id: number, updatePerdiacheiDto: UpdatePerdiacheiDto) {
-    return `This action updates a #${id} perdiachei`;
+  async update(id: number, updatePerdiacheiDto: UpdatePerdiacheiDto): Promise<Perdiachei> {
+    const perdiachei = await this.prisma.perdiachei.update({
+      where: { id },
+      data: {
+        detalhes: updatePerdiacheiDto.detalhes,
+        localizacao: updatePerdiacheiDto.localizacao,
+        data: updatePerdiacheiDto.data,
+        status: updatePerdiacheiDto.status,
+        tipo: updatePerdiacheiDto.tipo,
+      },
+    });
+    return this.mapToEntity(perdiachei);
   }
 
   async findAll(): Promise<Perdiachei[]> {
@@ -43,7 +59,10 @@ constructor(private prisma: PrismaService) {}
     return `This action returns a #${id} perdiachei`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} perdiachei`;
+  async remove(id: number): Promise<Perdiachei> {
+    const perdiachei = await this.prisma.perdiachei.delete({
+      where: { id },
+    });
+    return this.mapToEntity(perdiachei);
   }
 }

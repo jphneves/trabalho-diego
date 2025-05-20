@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { PerdiacheiService } from './perdiachei.service';
 import { CreatePerdiacheiDto } from './dto/create-perdiachei.dto';
 import { UpdatePerdiacheiDto } from './dto/update-perdiachei.dto';
@@ -24,6 +24,11 @@ export class PerdiacheiController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePerdiacheiDto: UpdatePerdiacheiDto) {
+    return this.perdiacheiService.update(+id, updatePerdiacheiDto);
+  }
+
+  @Put(':id')
+  updateWithPut(@Param('id') id: string, @Body() updatePerdiacheiDto: UpdatePerdiacheiDto) {
     return this.perdiacheiService.update(+id, updatePerdiacheiDto);
   }
 
